@@ -1,5 +1,5 @@
 let canvas = document.querySelector('#my-canvas')
-var c = canvas.getContext("2d");
+var ctx = canvas.getContext("2d");
 let platform = document.getElementById("platform")
 
 function getGrid () {
@@ -17,19 +17,22 @@ function displayGrid(grid) {
 function displayBlocks(grid) {
     console.log(grid.blocks)
     grid.blocks.forEach(block => {
+        testFunction(block)
+        anotherTest(block)
+        lastTest(block)
         
-        let span = document.createElement('span')
-        span.className = `block-unit`
-        span.style.width = `${block.width}px`
-        span.style.height = `${block.height}px`
-        span.style.color = 'orange'
-        canvas.append(span)
-        // let test = document.createElement('div')
-        // var ctx = test.getContext("2d")
-        // ctx.fillRect(100, 100, 100, 100)
-        // ctx.fillStyle = "orange"
-        // ctx.className = "block-unit"
-        // canvas.append(ctx)
+        // let span = document.createElement('span')
+        // span.className = `block-unit`
+        // span.style.width = `${block.width}px`
+        // span.style.height = `${block.height}px`
+        // span.style.color = 'orange'
+        // canvas.append(span)
+        // // let test = document.createElement('div')
+        // // var ctx = test.getContext("2d")
+        // // ctx.fillRect(100, 100, 100, 100)
+        // // ctx.fillStyle = "orange"
+        // // ctx.className = "block-unit"
+        // // canvas.append(ctx)
     })
     
 }
@@ -37,8 +40,8 @@ function displayBlocks(grid) {
 function movePlatformLeft() {
     let leftNumbers = platform.style.left.replace("px", "");
     let left = parseInt(leftNumbers, 10);
-    if (left > 0) {
-      platform.style.left = `${left - 1}px`;
+    if (left > 20) {
+      platform.style.left = `${left - 10}px`;
     }
 }
 
@@ -51,8 +54,8 @@ document.addEventListener("keydown", function(e) {
 function movePlatformRight() {
     let rightNumbers = platform.style.left.replace("px", "");
     let right = parseInt(rightNumbers, 10);
-    if (right < 900) {
-      platform.style.left = `${right + 1}px`;
+    if (right < 990) {
+      platform.style.left = `${right + 10}px`;
     }
 }
 document.addEventListener("keydown", function(e) {
@@ -69,8 +72,8 @@ function displayBall(grid) {
     c.closePath()
 }
 
-var x = grid.ball.x
-var y = grid.ball.y
+// var x = grid.ball.x
+// var y = grid.ball.y
 
 function animate() {
     requestAnimationFrame(animate)
@@ -80,34 +83,33 @@ function animate() {
     y += grid.ball.speed
 }
 
-//// creating grid for box
-
-//grid width and height
-var bw = 900;
-var bh = 800;
-//padding around grid
-var p = 10;
-//size of canvas
-let cw = bw + (p*2) + 1;
-let ch = bh + (p*2) + 1;
-
-let theCanvas = c.css({width: cw, height: ch}).appendTo('#my-canvas');
-let context = theCanvas.get(0).getContext("2d");
-
-function drawBoard(){
-    for (let x = 0; x <= bw; x += 40) {
-        context.moveTo(0.5 + x + p, p);
-        context.lineTo(0.5 + x + p, bh + p);
-    }
 
 
-    for (let x = 0; x <= bh; x += 40) {
-        context.moveTo(p, 0.5 + x + p);
-        context.lineTo(bw + p, 0.5 + x + p);
-    }
 
-    context.strokeStyle = "black";
-    context.stroke();
+
+// Red rectangle
+function testFunction(block) {
+ctx.beginPath();
+ctx.lineWidth = "4";
+ctx.strokeStyle = "blue";
+ctx.rect(block.x, block.y, block.width, block.height);
+ctx.stroke();
 }
 
-drawBoard();
+// Green rectangle
+function anotherTest(block) {
+ctx.beginPath();
+ctx.lineWidth = "4";
+ctx.strokeStyle = "green";
+ctx.rect(block.x, block.y + 60, block.width, block.height);
+ctx.stroke();
+}
+
+// Blue rectangle
+function lastTest(block) {
+ctx.beginPath();
+ctx.lineWidth = "4";
+ctx.strokeStyle = "orange";
+ctx.rect(block.x, block.y + 120, block.width, block.height);
+ctx.stroke();
+}
