@@ -4,3 +4,12 @@
     position: relative;
     width: 40px;
 }
+
+body {
+    background: white;
+}
+
+Canvas {
+    background: rgb(235, 67, 67);
+    margin: 20px;
+}
