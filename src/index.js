@@ -11,7 +11,26 @@ function getGrid () {
 getGrid()
 
 function displayGrid(grid) {
-    console.log(grid)
+    displayBlocks(grid)
+}
+
+function displayBlocks(grid) {
+    console.log(grid.blocks)
+    grid.blocks.forEach(block => {
+        
+        let span = document.createElement('span')
+        span.className = `block-unit`
+        span.style.width = `${block.width}px`
+        span.style.height = `${block.height}px`
+        span.style.color = 'orange'
+        canvas.append(span)
+        // let test = document.createElement('div')
+        // var ctx = test.getContext("2d")
+        // ctx.fillRect(100, 100, 100, 100)
+        // ctx.fillStyle = "orange"
+        // ctx.className = "block-unit"
+        // canvas.append(ctx)
+    })
     
 }
 
