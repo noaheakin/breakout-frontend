@@ -62,6 +62,7 @@ function animate() {
 }
 
 //// creating grid for box
+
 //grid width and height
 var bw = 900;
 var bh = 800;
@@ -71,8 +72,7 @@ var p = 10;
 let cw = bw + (p*2) + 1;
 let ch = bh + (p*2) + 1;
 
-let theCanvas = $('<canvas/>').css({width: cw, height: ch}).appendTo('body');
-
+let theCanvas = c.css({width: cw, height: ch}).appendTo('#my-canvas');
 let context = theCanvas.get(0).getContext("2d");
 
 function drawBoard(){
