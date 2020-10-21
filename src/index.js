@@ -3,7 +3,7 @@ var ctx = canvas.getContext("2d");
 let platform = document.getElementById("platform")
 
 function getGrid () {
-    fetch(`http://localhost:3000/grids/1`)
+    fetch(`http://localhost:3000/grids/5`)
     .then(res => res.json())
     .then(grid => displayGrid(grid))
 }
@@ -17,9 +17,11 @@ function displayGrid(grid) {
 function displayBlocks(grid) {
     console.log(grid.blocks)
     grid.blocks.forEach(block => {
-        testFunction(block)
-        anotherTest(block)
-        lastTest(block)
+        firstRow(block)
+        secondRow(block)
+        thirdRow(block)
+        fourthRow(block)
+        fifthRow(block)
         
         // let span = document.createElement('span')
         // span.className = `block-unit`
@@ -88,28 +90,49 @@ function animate() {
 
 
 // Red rectangle
-function testFunction(block) {
+function firstRow(block) {
 ctx.beginPath();
 ctx.lineWidth = "4";
 ctx.strokeStyle = "blue";
-ctx.rect(block.x, block.y, block.width, block.height);
+ctx.fillStyle = "blue";
+ctx.fillRect(block.x, block.y, block.width, block.height);
 ctx.stroke();
 }
 
 // Green rectangle
-function anotherTest(block) {
+function secondRow(block) {
 ctx.beginPath();
 ctx.lineWidth = "4";
-ctx.strokeStyle = "green";
-ctx.rect(block.x, block.y + 60, block.width, block.height);
+ctx.strokeStyle = "#00ffa7";
+ctx.fillStyle = "#00ffa7";
+ctx.fillRect(block.x, block.y + 60, block.width, block.height);
 ctx.stroke();
 }
 
 // Blue rectangle
-function lastTest(block) {
+function thirdRow(block) {
 ctx.beginPath();
 ctx.lineWidth = "4";
-ctx.strokeStyle = "orange";
-ctx.rect(block.x, block.y + 120, block.width, block.height);
+ctx.strokeStyle = "limegreen";
+ctx.fillStyle = "limegreen";
+ctx.fillRect(block.x, block.y + 120, block.width, block.height);
 ctx.stroke();
+}
+
+function fourthRow(block) {
+    ctx.beginPath();
+    ctx.lineWidth = "4";
+    ctx.strokeStyle = "yellow";
+    ctx.fillStyle = "yellow";
+    ctx.fillRect(block.x, block.y + 180, block.width, block.height);
+    ctx.stroke();
+}
+
+function fifthRow(block) {
+    ctx.beginPath();
+    ctx.lineWidth = "4";
+    ctx.strokeStyle = "orange";
+    ctx.fillStyle = "orange";
+    ctx.fillRect(block.x, block.y + 240, block.width, block.height);
+    ctx.stroke();
 }
