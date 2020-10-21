@@ -19,6 +19,7 @@ getGrids()
 
 function displayGrid(grid) {
     displayBlocks(grid)
+    displayBall(grid)
 }
 
 function displayBlocks(grid) {
@@ -74,11 +75,21 @@ document.addEventListener("keydown", function(e) {
 })
 
 function displayBall(grid) {
-    c.beginPath()
-    c.arc(grid.ball.x, grid.ball.y, grid.ball.width/2, 0, Math.PI*2, false)
-    c.fillStyle = "green"
-    c.fill()
-    c.closePath()
+    // c.beginPath()
+    // c.arc(grid.ball.x, grid.ball.y, grid.ball.width/2, 0, Math.PI*2, false)
+    // c.fillStyle = "green"
+    // c.fill()
+    // c.closePath()
+    console.log(grid.ball)
+    ctx.beginPath()
+    ctx.strokeStyle = "#00ffa7";
+    ctx.arc(grid.ball.x, grid.ball.y, grid.ball.width/2, 0, Math.PI*2)
+    ctx.stroke();
+    if (grid.ball.x + grid.ball.width < 0 || grid.ball.x + grid.ball.width > canvas.width) {
+        dx = -dx
+    } else if (grid.ball.y + grid.ball.height < 0 || grid.ball.y + grid.ball.height > canvas.height) {
+        dy = -dy
+    }
 }
 
 // var x = grid.ball.x
@@ -91,9 +102,6 @@ function animate() {
     x += grid.ball.speed
     y += grid.ball.speed
 }
-
-
-
 
 
 // Red rectangle
