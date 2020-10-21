@@ -1,14 +1,21 @@
+let url = 'http://localhost:3000/grids'
 let canvas = document.querySelector('#my-canvas')
 var ctx = canvas.getContext("2d");
 let platform = document.getElementById("platform")
 
-function getGrid () {
-    fetch(`http://localhost:3000/grids/5`)
+function getGrids () {
+    fetch(url)
     .then(res => res.json())
-    .then(grid => displayGrid(grid))
+    .then(grids=> {
+        gridRoute = grids[0].ball.grid_id
+        fetch(`http://localhost:3000/grids/${gridRoute}`)
+        .then(res => res.json())
+        .then(grid => displayGrid(grid))
+    })
 }
+    
 
-getGrid()
+getGrids()
 
 function displayGrid(grid) {
     displayBlocks(grid)
