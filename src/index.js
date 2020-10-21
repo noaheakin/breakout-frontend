@@ -3,7 +3,7 @@ var ctx = canvas.getContext("2d");
 let platform = document.getElementById("platform")
 
 function getGrid () {
-    fetch(`http://localhost:3000/grids/5`)
+    fetch(`http://localhost:3000/grids/1`)
     .then(res => res.json())
     .then(grid => displayGrid(grid))
 }
@@ -75,6 +75,7 @@ function displayBall(grid) {
     // c.closePath()
     console.log(grid.ball)
     ctx.beginPath()
+    ctx.strokeStyle = "#00ffa7";
     ctx.arc(grid.ball.x, grid.ball.y, grid.ball.width/2, 0, Math.PI*2)
     ctx.stroke();
     if (grid.ball.x + grid.ball.width < 0 || grid.ball.x + grid.ball.width > canvas.width) {
