@@ -13,7 +13,6 @@ function getGrids () {
         .then(grid => displayGrid(grid))
     })
 }
-    
 
 getGrids()
 
@@ -23,7 +22,7 @@ function displayGrid(grid) {
 }
 
 function displayBlocks(grid) {
-    console.log(grid.blocks)
+    // console.log(grid.blocks)
     grid.blocks.forEach(block => {
         firstRow(block)
         secondRow(block)
