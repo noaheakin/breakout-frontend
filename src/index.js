@@ -8,7 +8,7 @@ let score = 0
 let lives = 3
 
 // THIS RUNS THE PROGRAM!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-setInterval(draw, 1)
+//let interval = setInterval(draw, 1)
 
 let platform = {x: (canvas.width - 200)/2, y: canvas.height - 40, width: 200, height: 10, speed: 8}
 
@@ -62,6 +62,7 @@ const blockHeight = 50
 const blockPadding = 10
 const blockOffsetTop = 10
 const blockOffsetLeft = 10
+let blockCounter = blockRowCount * blockColumnCount
 
 // array of blocks created for each 
 let blocks = [];
@@ -71,7 +72,7 @@ for(let c = 0; c < blockColumnCount; c++) {
         blocks[c][r] = { x: 0, y: 0, show: 1}
     }
 }
-let blockCounter = blocks.length
+
 
 // draw blocks in rows [r] and columns [c]
 function drawBlocks() {
@@ -140,8 +141,14 @@ function resetPlatform(){
 function finalResult(){
     if (lives == 0) {
         alert(`You have lost. final score = ${score}`)
+        // reloads page and starts game again after alert button pressed
+        document.location.reload()
+        clearInterval(interval)
     }else if (blockCounter == 0) {
         alert(`You Won! lives = ${lives}, score = ${score}`)
+        // reloads page and starts game again after alert button pressed
+        document.location.reload()
+        clearInterval(interval)
     }
 }
 
