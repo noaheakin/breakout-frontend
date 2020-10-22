@@ -1,144 +1,253 @@
 let url = 'http://localhost:3000/grids'
 let canvas = document.querySelector('#my-canvas')
-var ctx = canvas.getContext("2d");
-let platform = document.getElementById("platform")
+let ctx = canvas.getContext("2d")
 let rightPressed = false
 let leftPressed = false
-let platformEventListenerAdded = false
+// let platform = document.getElementById("platform")
 
-function getGrids () {
-    fetch(url)
-    .then(res => res.json())
-    .then(grids=> {
-        gridRoute = grids[0].ball.grid_id
-        fetch(`http://localhost:3000/grids/${gridRoute}`)
-        .then(res => res.json())
-        .then(grid => displayGrid(grid))
-    })
-}
-    
+// setInterval(draw, 1)
 
-getGrids()
+let platform = {x: (canvas.width - 200)/2, y: canvas.height - 40, width: 200, height: 10, speed: 8}
+// const platformHeight = 10
+// const platformWidth = 200
+// let platformX = (canvas.width-platformWidth)/2
+// let platformY = canvas.height-platformHeight - 30
 
-function displayGrid(grid) {
-   displayBlocks(grid)
-   // displayBall(grid)
-    displayPlatform(grid)
-}
-
-function displayBlocks(grid) {
-    console.log(grid.blocks)
-    grid.blocks.forEach(block => {
-        firstRow(block)
-        secondRow(block)
-        thirdRow(block)
-        fourthRow(block)
-        fifthRow(block)
-        
-        // let span = document.createElement('span')
-        // span.className = `block-unit`
-        // span.style.width = `${block.width}px`
-        // span.style.height = `${block.height}px`
-        // span.style.color = 'orange'
-        // canvas.append(span)
-        // // let test = document.createElement('div')
-        // // var ctx = test.getContext("2d")
-        // // ctx.fillRect(100, 100, 100, 100)
-        // // ctx.fillStyle = "orange"
-        // // ctx.className = "block-unit"
-        // // canvas.append(ctx)
-    })
-    
-}
-
-function displayPlatform(grid){
-    console.log(grid)
+function drawPlatform() {
     ctx.beginPath()
-    ctx.lineWidth = "4"
-    ctx.strokeStyle = "pink"
+    ctx.rect(platform.x, platform.y, platform.width, platform.height)
     ctx.fillStyle = "pink"
-    ctx.fillRect(grid.platform.x, grid.platform.y, grid.platform.width, grid.platform.height)
-    ctx.stroke()
-    if (platformEventListenerAdded == false) {
-        addEventListenerToPlatform(grid)
-    }
+    ctx.fill()
+    ctx.closePath()
 }
 
-function addEventListenerToPlatform(grid){
-    document.addEventListener("keydown", (e) => keyDownHandler(e, grid), false);
-    document.addEventListener("keyup", keyUpHandler, false);
-    platformEventListenerAdded = true
-}
+document.addEventListener("keydown", keyDownHandler, false)
+document.addEventListener("keyup", keyUpHandler, false)
 
-function keyDownHandler(e, grid) {
-    if(e.key === "ArrowRight") {
-        rightPressed = true;
+
+function keyDownHandler(e) {
+    if(e.key == "ArrowRight") {
+        rightPressed = true
     }
-    else if(e.key === "ArrowLeft") {
-        leftPressed = true;
+    else if(e.key == "ArrowLeft") {
+        leftPressed = true
     }
-    pressButtons(grid)
 }
 
 function keyUpHandler(e) {
-    if(e.key === "ArrowRight") {
-        rightPressed = false;
+    if(e.key == "ArrowRight") {
+        rightPressed = false
     }
-    else if(e.key === "ArrowLeft") {
-        leftPressed = false;
+    else if(e.key == "ArrowLeft") {
+        leftPressed = false
     }
 }
 
-function pressButtons(grid){
-if(rightPressed) {
-    console.log(grid.platform)
-    grid.platform.x += grid.platform.speed + 10
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    displayPlatform(grid)
-    displayBlocks(grid)
-    console.log("going right")
-    if (grid.platform.x + grid.platform.width > canvas.width){
-        grid.platform.x = canvas.width - grid.platform.width
-    }
-}
-else if(leftPressed) {
-    console.log(grid.platform)
-    grid.platform.x -= grid.platform.speed + 10
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    displayPlatform(grid)
-    console.log("going left")
-    if (grid.platform.x < 0){
-        grid.platform.x = 0;
-    }
-} 
+// ball variables
+let ball = {x: canvas.width/2, y: canvas.height-50, radius: 10}
+let dx = 1
+let dy = -1
+
+// ball creation
+function drawBall() {
+    ctx.beginPath()
+    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2)
+    ctx.fillStyle = "blue"
+    ctx.fill()
+    ctx.closePath()
 }
 
-// function movePlatformLeft() {
-//     let leftNumbers = platform.style.left.replace("px", "");
-//     let left = parseInt(leftNumbers, 10);
-//     if (left > 20) {
-//       platform.style.left = `${left - 10}px`;
+// block constant variables
+const blockRowCount = 4
+const blockColumnCount = 10
+const blockWidth = 90
+const blockHeight = 50
+const blockPadding = 10
+const blockOffsetTop = 10
+const blockOffsetLeft = 10
+
+// array of blocks created for each 
+let blocks = [];
+for(let c = 0; c < blockColumnCount; c++) {
+    blocks[c] = [];
+    for(let r = 0; r < blockRowCount; r++) {
+        blocks[c][r] = { x: 0, y: 0, show: 1}
+    }
+}
+
+// draw blocks in rows [r] and columns [c]
+function drawBlocks() {
+    for(let c = 0; c < blockColumnCount; c++) {
+        for(let r = 0; r < blockRowCount; r++) {
+            var blockX = (c * (blockWidth + blockPadding)) + blockOffsetLeft
+            var blockY = (r * (blockHeight + blockPadding)) + blockOffsetTop
+            blocks[c][r].x = blockX
+            blocks[c][r].y = blockY
+            ctx.beginPath()
+            ctx.rect(blockX, blockY, blockWidth, blockHeight)
+            ctx.fillStyle = "green"
+            ctx.fill()
+            ctx.closePath()
+        }
+    }
+}
+
+
+// draws ball and barrier
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    drawBall()
+    drawBlocks()
+    drawPlatform()
+    if (ball.x + dx > canvas.width-ball.radius || ball.x + dx < ball.radius) {
+        dx = -dx
+        console.log('ding')
+    }
+    if (ball.y + dy > canvas.height-ball.radius || ball.y + dy < ball.radius) {
+        dy = -dy
+        console.log('dong')
+    } else if (ball.y + dy > canvas.height - ball.radius) {
+        if(ball.x > platform.x && ball.x < platform.x + platform.width) {
+          dy = -dy 
+        }
+    }
+    if (rightPressed && platform.x < canvas.width - platform.width) {
+        platform.x += platform.speed
+    }
+    else if (leftPressed && platform.x > 0) {
+        platform.x -= platform.speed
+    }
+
+    ball.x += dx
+    ball.y += dy
+}
+
+
+
+//runs draw every milisecond to mimic movement
+//let interval = setInterval(draw, 1);
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// let rightPressed = false
+// let leftPressed = false
+// let platformEventListenerAdded = false
+
+// function getGrids () {
+//     fetch(url)
+//     .then(res => res.json())
+//     .then(grids=> {
+//         gridRoute = grids[0].ball.grid_id
+//         fetch(`http://localhost:3000/grids/${gridRoute}`)
+//         .then(res => res.json())
+//         .then(grid => displayGrid(grid))
+//     })
+// }
+    
+
+// getGrids()
+
+// function displayGrid(grid) {
+//    displayBlocks(grid)
+//    // displayBall(grid)
+//     displayPlatform(grid)
+//     if(collision(ball, grid.platform)){
+//         dy = -dy
 //     }
 // }
 
-// document.addEventListener("keydown", function(e) {
-//     if (e.key === "ArrowLeft") {
-//       movePlatformLeft();
-//     }
-// });
+// function displayBlocks(grid) {
+//     console.log(grid.blocks)
+//     grid.blocks.forEach(block => {
+//         firstRow(block)
+//         secondRow(block)
+//         thirdRow(block)
+//         fourthRow(block)
+//         fifthRow(block)
+        
+//         // let span = document.createElement('span')
+//         // span.className = `block-unit`
+//         // span.style.width = `${block.width}px`
+//         // span.style.height = `${block.height}px`
+//         // span.style.color = 'orange'
+//         // canvas.append(span)
+//         // // let test = document.createElement('div')
+//         // // var ctx = test.getContext("2d")
+//         // // ctx.fillRect(100, 100, 100, 100)
+//         // // ctx.fillStyle = "orange"
+//         // // ctx.className = "block-unit"
+//         // // canvas.append(ctx)
+//     })
+    
+// }
 
-// function movePlatformRight() {
-//     let rightNumbers = platform.style.left.replace("px", "");
-//     let right = parseInt(rightNumbers, 10);
-//     if (right < 880) {
-//       platform.style.left = `${right + 10}px`;
+// function displayPlatform(grid){
+//     console.log(grid)
+//     ctx.beginPath()
+//     ctx.lineWidth = "4"
+//     ctx.strokeStyle = "pink"
+//     ctx.fillStyle = "pink"
+//     ctx.fillRect(grid.platform.x, grid.platform.y, grid.platform.width+200, grid.platform.height)
+//     ctx.stroke()
+//     if (platformEventListenerAdded == false) {
+//         addEventListenerToPlatform(grid)
 //     }
 // }
-// document.addEventListener("keydown", function(e) {
-//     if (e.key === "ArrowRight") {
-//       movePlatformRight();
+
+// function addEventListenerToPlatform(grid){
+//     document.addEventListener("keydown", (e) => keyDownHandler(e, grid), false);
+//     document.addEventListener("keyup", keyUpHandler, false);
+//     platformEventListenerAdded = true
+// }
+
+// function keyDownHandler(e, grid) {
+//     if(e.key === "ArrowRight") {
+//         rightPressed = true;
 //     }
-// })
+//     else if(e.key === "ArrowLeft") {
+//         leftPressed = true;
+//     }
+//     pressButtons(grid)
+// }
+
+// function keyUpHandler(e) {
+//     if(e.key === "ArrowRight") {
+//         rightPressed = false;
+//     }
+//     else if(e.key === "ArrowLeft") {
+//         leftPressed = false;
+//     }
+// }
+
+// function pressButtons(grid){
+// if(rightPressed) {
+//     console.log(grid.platform)
+//     grid.platform.x += grid.platform.speed + 10
+//     ctx.clearRect(0, 0, canvas.width, canvas.height);
+//     displayPlatform(grid)
+//     displayBlocks(grid)
+//     console.log("going right")
+//     if (grid.platform.x + grid.platform.width > canvas.width){
+//         grid.platform.x = canvas.width - grid.platform.width
+//     }
+// }
+// else if(leftPressed) {
+//     console.log(grid.platform)
+//     grid.platform.x -= grid.platform.speed + 10
+//     ctx.clearRect(0, 0, canvas.width, canvas.height);
+//     displayPlatform(grid)
+//     displayBlocks(grid)
+//     console.log("going left")
+//     if (grid.platform.x < 0){
+//         grid.platform.x = 0;
+//     }
+// } 
+// }
+
+
 
 // function displayBall(grid) {
 //     // c.beginPath()
@@ -167,79 +276,86 @@ else if(leftPressed) {
 // }
 
 
-// Red rectangle
-function firstRow(block) {
-ctx.beginPath();
-ctx.lineWidth = "4";
-ctx.strokeStyle = "blue";
-ctx.fillStyle = "blue";
-ctx.fillRect(block.x, block.y, block.width, block.height);
-ctx.stroke();
-}
+// // Red rectangle
+// function firstRow(block) {
+// ctx.beginPath();
+// ctx.lineWidth = "4";
+// ctx.strokeStyle = "blue";
+// ctx.fillStyle = "blue";
+// ctx.fillRect(block.x, block.y, block.width, block.height);
+// ctx.stroke();
+// }
 
-// Green rectangle
-function secondRow(block) {
-ctx.beginPath();
-ctx.lineWidth = "4";
-ctx.strokeStyle = "#00ffa7";
-ctx.fillStyle = "#00ffa7";
-ctx.fillRect(block.x, block.y + 60, block.width, block.height);
-ctx.stroke();
-}
+// // Green rectangle
+// function secondRow(block) {
+// ctx.beginPath();
+// ctx.lineWidth = "4";
+// ctx.strokeStyle = "#00ffa7";
+// ctx.fillStyle = "#00ffa7";
+// ctx.fillRect(block.x, block.y + 60, block.width, block.height);
+// ctx.stroke();
+// }
 
-// Blue rectangle
-function thirdRow(block) {
-ctx.beginPath();
-ctx.lineWidth = "4";
-ctx.strokeStyle = "limegreen";
-ctx.fillStyle = "limegreen";
-ctx.fillRect(block.x, block.y + 120, block.width, block.height);
-ctx.stroke();
-}
+// // Blue rectangle
+// function thirdRow(block) {
+// ctx.beginPath();
+// ctx.lineWidth = "4";
+// ctx.strokeStyle = "limegreen";
+// ctx.fillStyle = "limegreen";
+// ctx.fillRect(block.x, block.y + 120, block.width, block.height);
+// ctx.stroke();
+// }
 
-function fourthRow(block) {
-    ctx.beginPath();
-    ctx.lineWidth = "4";
-    ctx.strokeStyle = "yellow";
-    ctx.fillStyle = "yellow";
-    ctx.fillRect(block.x, block.y + 180, block.width, block.height);
-    ctx.stroke();
-}
+// function fourthRow(block) {
+//     ctx.beginPath();
+//     ctx.lineWidth = "4";
+//     ctx.strokeStyle = "yellow";
+//     ctx.fillStyle = "yellow";
+//     ctx.fillRect(block.x, block.y + 180, block.width, block.height);
+//     ctx.stroke();
+// }
 
-function fifthRow(block) {
-    ctx.beginPath();
-    ctx.lineWidth = "4";
-    ctx.strokeStyle = "orange";
-    ctx.fillStyle = "orange";
-    ctx.fillRect(block.x, block.y + 240, block.width, block.height);
-    ctx.stroke();
-}
+// function fifthRow(block) {
+//     ctx.beginPath();
+//     ctx.lineWidth = "4";
+//     ctx.strokeStyle = "orange";
+//     ctx.fillStyle = "orange";
+//     ctx.fillRect(block.x, block.y + 240, block.width, block.height);
+//     ctx.stroke();
+// }
 
-let x = canvas.width/2
-let y = canvas.height-30
-let ballRadius = 10
-let dx = 1
-let dy = -1
-function drawBall() {
-    ctx.beginPath();
-    ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-    ctx.fillStyle = "#0095DD";
-    ctx.fill();
-    ctx.closePath();
-}
 
-function draw() {
-    //ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawBall();
-    if (x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
-        dx = -dx;
-        console.log('ding')
-    }
-    if (y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
-        dy = -dy;
-        console.log('dong')
-    }
-    x += dx;
-    y += dy;
-}
-setInterval(draw, 1);
+// function movePlatformLeft() {
+//     let leftNumbers = platform.style.left.replace("px", "");
+//     let left = parseInt(leftNumbers, 10);
+//     if (left > 20) {
+//       platform.style.left = `${left - 10}px`;
+//     }
+// }
+// document.addEventListener("keydown", function(e) {
+//     if (e.key === "ArrowLeft") {
+//       movePlatformLeft();
+//     }
+// });
+
+// function movePlatformRight() {
+//     let rightNumbers = platform.style.left.replace("px", "");
+//     let right = parseInt(rightNumbers, 10);
+//     if (right < 880) {
+//       platform.style.left = `${right + 10}px`;
+//     }
+// }
+// document.addEventListener("keydown", function(e) {
+//     if (e.key === "ArrowRight") {
+//       movePlatformRight();
+//     }
+// })
+
+// let collision = function(obj1, obj2){
+//     if (obj1.x +obj1.w > obj2.x && obj1.x < obj2.x + obj2.w && obj2.y + obj2.h > obj1.y && obj2.y < obj1.y + obj1.h) {
+//         console.log(collision)
+//         return true
+//     } else {
+//         return false
+//     }
+// }
