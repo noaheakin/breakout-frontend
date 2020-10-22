@@ -5,7 +5,8 @@ let rightPressed = false
 let leftPressed = false
 // let platform = document.getElementById("platform")
 
-//setInterval(draw, 1)
+// THIS RUNS THE PROGRAM!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+setInterval(draw, 1)
 
 let platform = {x: (canvas.width - 200)/2, y: canvas.height - 40, width: 200, height: 10, speed: 8}
 // const platformHeight = 10
@@ -44,9 +45,7 @@ function keyUpHandler(e) {
 }
 
 // ball variables
-let ball = {x: canvas.width/2, y: canvas.height-50, radius: 10}
-let dx = 1
-let dy = -1
+let ball = {x: canvas.width/2, y: canvas.height-50, radius: 10, dx: 1, dy: 1}
 
 // ball creation
 function drawBall() {
@@ -93,12 +92,13 @@ function drawBlocks() {
         }
     }
 }
+
 function collision() {
     for (let c = 0; c < blockColumnCount; c++) {
         for (let r = 0; r < blockRowCount; r++) {
             if (blocks[c][r].show == 1) {
                 if (ball.x > blocks[c][r].x && ball.x < blocks[c][r].x + blockWidth && ball.y > blocks[c][r].y && ball.y < blocks[c][r].y + blockHeight) {
-                    dy = -dy;
+                    ball.dy = -ball.dy;
                     blocks[c][r].show = 0;
                 }
             }
@@ -107,10 +107,16 @@ function collision() {
 }
 
 function collisionPlatform(){
-    if (ball.y + dy > canvas.height - ball.radius) {
-        if(ball.x > platform.x && ball.x < platform.x + platform.width && ball.y > platform.y && ball.y < platform.y + platform.height) {
-          dy = -dy 
-        }
+    if(ball.x < platform.x + platform.width && ball.x > platform.x && platform.y < platform.y + platform.height && ball.y > platform.y){
+        // grabs where the ball hits the platform
+        let collidePoint = ball.x - (platform.x + platform.width/2);
+        // normalizes the collide point
+        collidePoint = collidePoint / (platform.width/2);
+        // calculates the angle of the ball that it comes into contact with the platform
+        let angle = collidePoint * Math.PI/3;
+        // dx and dy change to the hypotenuse of the angle
+        ball.dx = Math.sin(angle);
+        ball.dy = -Math.cos(angle);
     }
 }
 
@@ -124,12 +130,12 @@ function draw() {
     collision()
     collisionPlatform()
     // ball containment
-    if (ball.x + dx > canvas.width-ball.radius || ball.x + dx < ball.radius) {
-        dx = -dx
+    if (ball.x + ball.dx > canvas.width-ball.radius || ball.x + ball.dx < ball.radius) {
+        ball.dx = -ball.dx
         console.log('ding')
     }
-    if (ball.y + dy > canvas.height-ball.radius || ball.y + dy < ball.radius) {
-        dy = -dy
+    if (ball.y + ball.dy > canvas.height-ball.radius || ball.y + ball.dy < ball.radius) {
+        ball.dy = -ball.dy
         console.log('dong')
     } 
     // platform movement
@@ -140,8 +146,8 @@ function draw() {
         platform.x -= platform.speed
     }
 
-    ball.x += dx
-    ball.y += dy
+    ball.x += ball.dx
+    ball.y += ball.dy
 }
 
 
