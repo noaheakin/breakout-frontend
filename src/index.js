@@ -1,4 +1,4 @@
-let url = 'http://localhost:3000/grids'
+// let url = 'http://localhost:3000/grids'
 let canvas = document.querySelector('#my-canvas')
 let ctx = canvas.getContext("2d")
 let rightPressed = false
