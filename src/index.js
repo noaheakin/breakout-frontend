@@ -3,7 +3,22 @@ let canvas = document.querySelector('#my-canvas')
 let ctx = canvas.getContext("2d")
 let rightPressed = false
 let leftPressed = false
+<<<<<<< HEAD
 // let platform = document.getElementById("platform")
+=======
+let platformEventListenerAdded = false
+
+function getGrids () {
+    fetch(url)
+    .then(res => res.json())
+    .then(grids=> {
+        gridRoute = grids[0].ball.grid_id
+        fetch(`http://localhost:3000/grids/${gridRoute}`)
+        .then(res => res.json())
+        .then(grid => displayGrid(grid))
+    })
+}
+>>>>>>> abc2886be2c7f2a908519bc6c2f8c77055be0978
 
 // setInterval(draw, 1)
 
@@ -13,7 +28,37 @@ let platform = {x: (canvas.width - 200)/2, y: canvas.height - 40, width: 200, he
 // let platformX = (canvas.width-platformWidth)/2
 // let platformY = canvas.height-platformHeight - 30
 
+<<<<<<< HEAD
 function drawPlatform() {
+=======
+function displayBlocks(grid) {
+    // console.log(grid.blocks)
+    grid.blocks.forEach(block => {
+        firstRow(block)
+        secondRow(block)
+        thirdRow(block)
+        fourthRow(block)
+        fifthRow(block)
+        
+        // let span = document.createElement('span')
+        // span.className = `block-unit`
+        // span.style.width = `${block.width}px`
+        // span.style.height = `${block.height}px`
+        // span.style.color = 'orange'
+        // canvas.append(span)
+        // // let test = document.createElement('div')
+        // // var ctx = test.getContext("2d")
+        // // ctx.fillRect(100, 100, 100, 100)
+        // // ctx.fillStyle = "orange"
+        // // ctx.className = "block-unit"
+        // // canvas.append(ctx)
+    })
+    
+}
+
+function displayPlatform(grid){
+    console.log(grid)
+>>>>>>> abc2886be2c7f2a908519bc6c2f8c77055be0978
     ctx.beginPath()
     ctx.rect(platform.x, platform.y, platform.width, platform.height)
     ctx.fillStyle = "pink"
