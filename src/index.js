@@ -3,24 +3,9 @@ let canvas = document.querySelector('#my-canvas')
 let ctx = canvas.getContext("2d")
 let rightPressed = false
 let leftPressed = false
-<<<<<<< HEAD
 // let platform = document.getElementById("platform")
-=======
-let platformEventListenerAdded = false
 
-function getGrids () {
-    fetch(url)
-    .then(res => res.json())
-    .then(grids=> {
-        gridRoute = grids[0].ball.grid_id
-        fetch(`http://localhost:3000/grids/${gridRoute}`)
-        .then(res => res.json())
-        .then(grid => displayGrid(grid))
-    })
-}
->>>>>>> abc2886be2c7f2a908519bc6c2f8c77055be0978
-
-// setInterval(draw, 1)
+//setInterval(draw, 1)
 
 let platform = {x: (canvas.width - 200)/2, y: canvas.height - 40, width: 200, height: 10, speed: 8}
 // const platformHeight = 10
@@ -28,37 +13,7 @@ let platform = {x: (canvas.width - 200)/2, y: canvas.height - 40, width: 200, he
 // let platformX = (canvas.width-platformWidth)/2
 // let platformY = canvas.height-platformHeight - 30
 
-<<<<<<< HEAD
 function drawPlatform() {
-=======
-function displayBlocks(grid) {
-    // console.log(grid.blocks)
-    grid.blocks.forEach(block => {
-        firstRow(block)
-        secondRow(block)
-        thirdRow(block)
-        fourthRow(block)
-        fifthRow(block)
-        
-        // let span = document.createElement('span')
-        // span.className = `block-unit`
-        // span.style.width = `${block.width}px`
-        // span.style.height = `${block.height}px`
-        // span.style.color = 'orange'
-        // canvas.append(span)
-        // // let test = document.createElement('div')
-        // // var ctx = test.getContext("2d")
-        // // ctx.fillRect(100, 100, 100, 100)
-        // // ctx.fillStyle = "orange"
-        // // ctx.className = "block-unit"
-        // // canvas.append(ctx)
-    })
-    
-}
-
-function displayPlatform(grid){
-    console.log(grid)
->>>>>>> abc2886be2c7f2a908519bc6c2f8c77055be0978
     ctx.beginPath()
     ctx.rect(platform.x, platform.y, platform.width, platform.height)
     ctx.fillStyle = "pink"
@@ -124,15 +79,37 @@ for(let c = 0; c < blockColumnCount; c++) {
 function drawBlocks() {
     for(let c = 0; c < blockColumnCount; c++) {
         for(let r = 0; r < blockRowCount; r++) {
-            var blockX = (c * (blockWidth + blockPadding)) + blockOffsetLeft
-            var blockY = (r * (blockHeight + blockPadding)) + blockOffsetTop
-            blocks[c][r].x = blockX
-            blocks[c][r].y = blockY
-            ctx.beginPath()
-            ctx.rect(blockX, blockY, blockWidth, blockHeight)
-            ctx.fillStyle = "green"
-            ctx.fill()
-            ctx.closePath()
+            if (blocks[c][r].show == 1) {
+                let blockX = (c * (blockWidth + blockPadding)) + blockOffsetLeft
+                let blockY = (r * (blockHeight + blockPadding)) + blockOffsetTop
+                blocks[c][r].x = blockX
+                blocks[c][r].y = blockY
+                ctx.beginPath()
+                ctx.rect(blockX, blockY, blockWidth, blockHeight)
+                ctx.fillStyle = "green"
+                ctx.fill()
+                ctx.closePath()
+            }
+        }
+    }
+}
+function collision() {
+    for (let c = 0; c < blockColumnCount; c++) {
+        for (let r = 0; r < blockRowCount; r++) {
+            if (blocks[c][r].show == 1) {
+                if (ball.x > blocks[c][r].x && ball.x < blocks[c][r].x + blockWidth && ball.y > blocks[c][r].y && ball.y < blocks[c][r].y + blockHeight) {
+                    dy = -dy;
+                    blocks[c][r].show = 0;
+                }
+            }
+        }
+    }
+}
+
+function collisionPlatform(){
+    if (ball.y + dy > canvas.height - ball.radius) {
+        if(ball.x > platform.x && ball.x < platform.x + platform.width && ball.y > platform.y && ball.y < platform.y + platform.height) {
+          dy = -dy 
         }
     }
 }
@@ -141,9 +118,12 @@ function drawBlocks() {
 // draws ball and barrier
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    drawBall()
     drawBlocks()
     drawPlatform()
+    drawBall()
+    collision()
+    collisionPlatform()
+    // ball containment
     if (ball.x + dx > canvas.width-ball.radius || ball.x + dx < ball.radius) {
         dx = -dx
         console.log('ding')
@@ -151,11 +131,8 @@ function draw() {
     if (ball.y + dy > canvas.height-ball.radius || ball.y + dy < ball.radius) {
         dy = -dy
         console.log('dong')
-    } else if (ball.y + dy > canvas.height - ball.radius) {
-        if(ball.x > platform.x && ball.x < platform.x + platform.width) {
-          dy = -dy 
-        }
-    }
+    } 
+    // platform movement
     if (rightPressed && platform.x < canvas.width - platform.width) {
         platform.x += platform.speed
     }
