@@ -4,15 +4,13 @@ let ctx = canvas.getContext("2d")
 let rightPressed = false
 let leftPressed = false
 // let platform = document.getElementById("platform")
+let score = 0
+let lives = 3
 
 // THIS RUNS THE PROGRAM!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 setInterval(draw, 1)
 
 let platform = {x: (canvas.width - 200)/2, y: canvas.height - 40, width: 200, height: 10, speed: 8}
-// const platformHeight = 10
-// const platformWidth = 200
-// let platformX = (canvas.width-platformWidth)/2
-// let platformY = canvas.height-platformHeight - 30
 
 function drawPlatform() {
     ctx.beginPath()
@@ -45,7 +43,7 @@ function keyUpHandler(e) {
 }
 
 // ball variables
-let ball = {x: canvas.width/2, y: canvas.height-50, radius: 10, dx: 1, dy: 1}
+let ball = {x: canvas.width/2, y: canvas.height-50, radius: 10, dx: 1, dy: 1, speed: 1}
 
 // ball creation
 function drawBall() {
@@ -73,6 +71,7 @@ for(let c = 0; c < blockColumnCount; c++) {
         blocks[c][r] = { x: 0, y: 0, show: 1}
     }
 }
+let blockCounter = blocks.length
 
 // draw blocks in rows [r] and columns [c]
 function drawBlocks() {
@@ -100,6 +99,9 @@ function collision() {
                 if (ball.x > blocks[c][r].x && ball.x < blocks[c][r].x + blockWidth && ball.y > blocks[c][r].y && ball.y < blocks[c][r].y + blockHeight) {
                     ball.dy = -ball.dy;
                     blocks[c][r].show = 0;
+                    score += 10
+                    blockCounter--
+                    console.log(`score = ${score}, ${blockCounter} blocks left`)
                 }
             }
         }
@@ -109,14 +111,37 @@ function collision() {
 function collisionPlatform(){
     if(ball.x < platform.x + platform.width && ball.x > platform.x && platform.y < platform.y + platform.height && ball.y > platform.y){
         // grabs where the ball hits the platform
-        let collidePoint = ball.x - (platform.x + platform.width/2);
+        let collidePoint = ball.x - (platform.x + platform.width/2)
         // normalizes the collide point
-        collidePoint = collidePoint / (platform.width/2);
+        collidePoint = collidePoint / (platform.width/2)
         // calculates the angle of the ball that it comes into contact with the platform
-        let angle = collidePoint * Math.PI/3;
+        let angle = collidePoint * Math.PI/3
         // dx and dy change to the hypotenuse of the angle
-        ball.dx = Math.sin(angle);
-        ball.dy = -Math.cos(angle);
+       // ball.speed *= 1.1
+        ball.dx = Math.sin(angle) 
+        ball.dy = -Math.cos(angle) 
+    }
+}
+
+// resets the ball after losing life
+function resetBall(){
+    ball.x = canvas.width/2
+    ball.y = canvas.height-50
+    ball.dx = 1 
+    ball.dy = 1
+    ball.speed = 1
+}
+
+// resets the platform after losing life
+function resetPlatform(){
+    platform.x = (canvas.width - 200)/2 
+}
+
+function finalResult(){
+    if (lives == 0) {
+        alert(`You have lost. final score = ${score}`)
+    }else if (blockCounter == 0) {
+        alert(`You Won! lives = ${lives}, score = ${score}`)
     }
 }
 
@@ -129,15 +154,22 @@ function draw() {
     drawBall()
     collision()
     collisionPlatform()
+    finalResult()
     // ball containment
     if (ball.x + ball.dx > canvas.width-ball.radius || ball.x + ball.dx < ball.radius) {
         ball.dx = -ball.dx
-        console.log('ding')
     }
-    if (ball.y + ball.dy > canvas.height-ball.radius || ball.y + ball.dy < ball.radius) {
+    if (ball.y + ball.dy < ball.radius) {
         ball.dy = -ball.dy
-        console.log('dong')
     } 
+    if (ball.y + ball.dy > canvas.height-ball.radius) {
+        lives--
+        score -= 50
+        console.log(`lives = ${lives} score = ${score}`)
+        resetBall()
+        resetPlatform()
+    }
+
     // platform movement
     if (rightPressed && platform.x < canvas.width - platform.width) {
         platform.x += platform.speed
@@ -149,11 +181,6 @@ function draw() {
     ball.x += ball.dx
     ball.y += ball.dy
 }
-
-
-
-//runs draw every milisecond to mimic movement
-//let interval = setInterval(draw, 1);
 
 
 
