@@ -1,3 +1,64 @@
+const userUrl = 'http://localhost:3000/users'
+let main = document.querySelector('main')
+let body = document.querySelector('#div_form')
+let form = document.querySelector('#form_id')
+let inputField = document.querySelector('#input_value')
+let inputField2 = document.querySelector('#input_value2')
+getUsers(userUrl)
+function getUsers(url) {
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+        })
+}
+// Patch request
+function patchUser(user,id){
+    fetch(`http://localhost:3000/users/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(user)
+    })
+    .then(user => res.json())
+    .then(getUsers(userUrl))
+    .then(()=> {
+    })
+}
+
+form.addEventListener('submit', (e) => handleSubmit(e))
+
+// handle submit
+function handleSubmit(e){
+    e.preventDefault()
+    // let user = {
+    //     username: e.target[0].value
+    // }
+    fetch(userUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: e.target[0].value
+        })
+    }) 
+    .then(res => res.json())
+    .then(console.log) 
+}
+
+function buildForm(){
+    main.innerhtml = ''
+    let h2 = document.createElement('h2')
+    h2.textContent = "Submit Username"
+    let inputField = document.querySelector('#input_value')
+    let inputField2 = document.querySelector('#input_value2')
+    inputField2.type = 'submit'
+    form.append(inputField, inputField2, h2)
+}
+buildForm()
+
 let url = 'http://localhost:3000/grids'
 let canvas = document.querySelector('#my-canvas')
 let ctx = canvas.getContext("2d")
@@ -8,7 +69,7 @@ let score = 0
 let lives = 3
 
 // THIS RUNS THE PROGRAM!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//let interval = setInterval(draw, 1)
+// let interval = setInterval(draw, 1)
 
 let platform = {x: (canvas.width - 200)/2, y: canvas.height - 40, width: 200, height: 10, speed: 8}
 
@@ -143,11 +204,13 @@ function finalResult(){
         alert(`You have lost. final score = ${score}`)
         // reloads page and starts game again after alert button pressed
         document.location.reload()
+        // postUserScore()
         clearInterval(interval)
     }else if (blockCounter == 0) {
         alert(`You Won! lives = ${lives}, score = ${score}`)
         // reloads page and starts game again after alert button pressed
         document.location.reload()
+        // postUserScore()
         clearInterval(interval)
     }
 }
@@ -188,6 +251,31 @@ function draw() {
     ball.x += ball.dx
     ball.y += ball.dy
 }
+
+// Get user scores
+// function postUserScore() {
+//     fetch('http://localhost:3000/scores', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({
+//             score: score,
+//             user_id: 
+//         })
+//     })    
+// }
+
+// function getUserScores() {
+//     fetch(`http://localhost:3000/users/${}`)
+//     .then(res => res.json())
+//     .then(user => {
+//         let sortScores = user.scores.sort()
+//         let topScores = sortScores.slice(-3)
+//         userTopScores(topScores)
+//     })
+// }
+
 
 
 
