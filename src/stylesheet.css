@@ -84,6 +84,15 @@ Canvas {
     text-align: center;
 }
 
-/* .score-li {
-    text-align: justify;
-} */
+.user-scores {
+    width: 40%;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.score-li {
+    width: 70%;
+    margin-left: 10%;
+    margin-right: 10%;
+    font-weight: bold;
+}

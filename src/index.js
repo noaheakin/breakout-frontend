@@ -157,11 +157,12 @@ function userTopScores(topScores) {
     let h4 = document.createElement('h4')
     if (topScores.length > 0) {
         h4.innerText = "Your Top Scores:"
+        h4.style = "text-decoration: underline;"
         scoresContainer.prepend(h4)
         topScores.forEach(element => {
             let li = document.createElement("li")
             li.className = 'score-li'
-            li.innerHTML = element.score
+            li.innerHTML = `--- ${element.score} ---       `
             let deleteScoreBtn = document.createElement("button")
             li.append(deleteScoreBtn)
             deleteScoreBtn.innerHTML = "X"
