@@ -9,17 +9,21 @@
 </head>
 <body>
     <main>
-        <div id=div_form>
+        <div class="title-div">
+            <h1 class="title">Breakout (Club) Game</h1>
+        </div>
+        <div id="div_form" class="div-style">
             <!-- <h3> where user name appears</h3> -->
-            <form id='form_id'>
-                <input id="input_value" type="text" name="username">
-                <input id="input_value2" type="text" name="username">
+            <form id="form_id">
             </form>
         </div>
         <h3 id="user-info"></h3>
-        <ol id="user-scores"></ol>
+        <div id="scores-container">
+            <ol id="user-scores"></ol>
+        </div>
+        <div id="start-game"></div>
+        <!-- <button id="start-game">Start Game</button> -->
         <h2 id="show-score-lives"></h2>
-        <button id="start-game">Start Game</button>
         <canvas id="my-canvas" width="1010" height="800"></canvas>
         <!-- <div id="platform", style="bottom:100px; left:400px;"></div> -->
         <script src="./src/index.js"></script>

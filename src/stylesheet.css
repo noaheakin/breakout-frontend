@@ -6,14 +6,40 @@
 }
 
 body {
-    background: white;
+    background:#e6ffff;
 }
 
 Canvas {
-    background: rgb(105, 96, 96);
-    margin: 20px;
+    background: #ccffff;
+    margin-left: 20%;
+    margin-right: 20%;
+    border: 5px navy solid;
+    width: 60%;
 }
 
 .block-unit {
     background-color: orange;
+}
+
+.div-style {
+    text-align: center;
+    border: 2px solid navy;
+    padding: 20px 20px 20px 20px;
+    margin-left: 18px;
+    width: 400px;
+    margin: 0 auto
+}
+
+.title-div {
+    text-align: center;
+    background-color: #ffccb3;
+    margin-left: 300px;
+    margin-right: 300px;
+}
+
+.title {
+    font-family: Bradley Hand;
+    font-weight: 900px;
+    font-size: 50px;
+    border: 5px #ff884d solid;
 }
