@@ -48,7 +48,7 @@
                 border: 5px #ff884d solid;
             }
             
-           #div_form {
+           #div_style {
                color: #e46533;
 
            }
@@ -112,3 +112,49 @@
                 background-color: #292d3e;
                 background-size: 100%;
                 transition: background 0s;
+            }
+
+.scores-list {
+    text-align: center;
+    padding: 20px 20px 20px 20px;
+    width: 400px;
+    margin: 0 auto;
+    
+}
+
+.current-user {
+    text-align: center;
+    padding: 20px 20px 0px 20px;
+    width: 400px;
+    margin: 0 auto;
+}
+
+.start-btn {
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-bottom: 20px;
+}
+
+.tracker {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    text-align: center;
+}
+
+.user-scores {
+    width: 40%;
+    margin-left: 25%;
+    margin-right: 25%;
+    border: 2px gold double;
+    background-color: #ffffe6;
+}
+
+.score-li {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    font-weight: bold;
+    padding: 5px 5px 5px 5px;
+}
