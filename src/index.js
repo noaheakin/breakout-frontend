@@ -10,33 +10,61 @@ let inputField2 = document.querySelector('#input_value2')
 let currentUserId
 let interval
 
-getUsers(userUrl)
-function getUsers(url) {
-    fetch(url)
-        .then(res => res.json())
-        .then(data => {
-            console.log(data)
-        })
-}
-// Patch request
-function patchUser(user,id){
-    fetch(`http://localhost:3000/users/${id}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type':'application/json'
-        },
-        body: JSON.stringify(user)
-    })
-    .then(user => res.json())
-    .then(getUsers(userUrl))
-    .then(()=> {
+// getUsers(userUrl)
+// function getUsers(url) {
+//     fetch(url)
+//         .then(res => res.json())
+//         .then(data => {
+//             console.log(data)
+//         })
+// }
+// // Patch request
+// function patchUser(user,id){
+//     fetch(`http://localhost:3000/users/${id}`, {
+//         method: 'PATCH',
+//         headers: {
+//             'Content-Type':'application/json'
+//         },
+//         body: JSON.stringify(user)
+//     })
+//     .then(res => res.json())
+//     .then(getUsers(userUrl))
+//     .then(()=> {
+//     })
+// }
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault()
+    checkUser(e)
+})
+
+function checkUser(e) {
+    let u = 0
+    fetch(userUrl)
+    .then(res => res.json())
+    .then(users => users.forEach(user => {
+        if (user.username == e.target[0].value) {
+            debugger
+            u++
+            currentUserId = user.id
+            displayUser(user)
+        }
+        else {
+            console.log("not this one")
+        }
+    }))
+    .finally(() => {
+        if (u == 0) {
+        handleSubmit(e)
+        }
     })
 }
 
-form.addEventListener('submit', (e) => handleSubmit(e))
+
 
 // handle submit
 function handleSubmit(e){
+    debugger
     e.preventDefault()
     // let user = {
     //     username: e.target[0].value
@@ -61,7 +89,15 @@ function handleSubmit(e){
 function displayUser(newUser){
     let h3 = document.querySelector('#user-info')
     h3.innerHTML = newUser.username
-    interval = setInterval(draw, 1)
+    let deleteBtn = document.createElement("button")
+    h3.append(deleteBtn)
+    deleteBtn.innerHTML = "Delete User"
+    deleteBtn.addEventListener('click', () => {
+        fetch(`http://localhost:3000/users/${currentUserId}`, {
+            method: 'DELETE'
+        })
+        .then(h3.innerHTML = "")
+    })
 }
 
 function buildForm(){
@@ -87,10 +123,6 @@ function postUserScore() {
             user_id: currentUserId
         })
     })  
-    .then(res => res.json())  
-    .then(json => {
-        debugger
-    })
 }
 
 // function getUserScores() {
@@ -114,6 +146,7 @@ let leftPressed = false
 // let platform = document.getElementById("platform")
 let currentScore = 0
 let lives = 3
+let gameButton = document.querySelector('#start-game')
 
 // THIS RUNS THE PROGRAM!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // let interval
@@ -126,7 +159,18 @@ let lives = 3
 //     }
 // }
 
+gameButton.addEventListener('click', () => {
+    if (currentUserId === undefined){
+        alert("sign in to play")
+    } else {
+        interval = setInterval(draw, 1)
+    }
+})
 
+function showScoreLives(){
+    let h2 = document.querySelector('#show-score-lives')
+    h2.innerHTML = `SCORE: ${currentScore} LIVES: ${lives}`
+}
 
 let platform = {x: (canvas.width - 200)/2, y: canvas.height - 40, width: 200, height: 10, speed: 8}
 
@@ -262,7 +306,7 @@ function finalResult(){
     if (lives == 0) {
         postUserScore()
         alert(`You have lost. final score = ${currentScore}`)
-        // reloads page and starts game again after alert button pressed
+        // reloads page and starts game again after alert button pressed. potentially change to canvas
         document.location.reload()
         clearInterval(interval)
     }else if (blockCounter == 0) {
@@ -283,6 +327,7 @@ function draw() {
     drawBall()
     collision()
     collisionPlatform()
+    showScoreLives()
     finalResult()
     // ball containment
     if (ball.x + ball.dx > canvas.width-ball.radius || ball.x + ball.dx < ball.radius) {
