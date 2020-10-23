@@ -82,10 +82,10 @@ function handleSubmit(e){
     }) 
 }
 
-
 function displayUser(newUser){
     let h3 = document.querySelector('#user-info')
     h3.innerHTML = newUser.username
+    getUserScores()
     let deleteBtn = document.createElement("button")
     h3.append(deleteBtn)
     deleteBtn.innerHTML = "Delete User"
@@ -122,15 +122,36 @@ function postUserScore() {
     })  
 }
 
-// function getUserScores() {
-//     fetch(`http://localhost:3000/users/${}`)
-//     .then(res => res.json())
-//     .then(user => {
-//         let sortScores = user.scores.sort()
-//         let topScores = sortScores.slice(-3)
-//         userTopScores(topScores)
-//     })
-// }
+function getUserScores() {
+    fetch(`http://localhost:3000/users/${currentUserId}`)
+    .then(res => res.json())
+    .then(user => {
+        let tempScores = user.scores
+        let sortScores = tempScores.sort(compare)
+        let topScores = sortScores.slice(0, 3)
+        debugger
+        userTopScores(topScores)
+    })
+}
+
+function compare(a, b){
+    if ( a.score > b.score ){
+        return -1;
+    }
+    if ( a.score < b.score ){
+        return 1;
+    }
+    return 0;
+}
+
+function userTopScores(topScores) {
+    let ol = document.querySelector('#user-scores')
+    topScores.forEach(element => {
+        let li = document.createElement("li")
+        li.innerHTML = element.score
+        ol.append(li)
+    })
+}
 
 ///////////////////////// THE FRONTEND ANIMATION STUFFFFFFFFF
 
