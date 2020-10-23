@@ -156,7 +156,7 @@ function userTopScores(topScores) {
     let ol = document.querySelector('#user-scores')
     let h4 = document.createElement('h4')
     if (topScores.length > 0) {
-        h4.innerText = "Your Top Scores:"
+        h4.innerText = "Your Top Scores"
         h4.style = "text-decoration: underline;"
         scoresContainer.prepend(h4)
         topScores.forEach(element => {
@@ -166,7 +166,7 @@ function userTopScores(topScores) {
             let deleteScoreBtn = document.createElement("button")
             li.append(deleteScoreBtn)
             deleteScoreBtn.innerHTML = "X"
-            deleteScoreBtn.addEventListener('click', () => deleteScores(element, ol))
+            deleteScoreBtn.addEventListener('click', () => deleteScores(element, ol, h4))
             ol.append(li)
         })
     } else {
@@ -175,12 +175,13 @@ function userTopScores(topScores) {
     }
 }
 
-function deleteScores(element, ol){
+function deleteScores(element, ol, h4){
     debugger
     fetch(`http://localhost:3000/scores/${element.id}`, {
         method: 'DELETE'
     })
     .then(() => {
+        h4.innerHTML = ""
         ol.innerHTML = ""
         getUserScores()
     }) 

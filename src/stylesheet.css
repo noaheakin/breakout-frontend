@@ -60,7 +60,8 @@ Canvas {
     text-align: center;
     padding: 20px 20px 20px 20px;
     width: 400px;
-    margin: 0 auto
+    margin: 0 auto;
+    
 }
 
 .current-user {
@@ -88,6 +89,8 @@ Canvas {
     width: 40%;
     margin-left: 25%;
     margin-right: 25%;
+    border: 2px gold double;
+    background-color: #ffffe6;
 }
 
 .score-li {
@@ -95,4 +98,5 @@ Canvas {
     margin-left: 5%;
     margin-right: 5%;
     font-weight: bold;
+    padding: 5px 5px 5px 5px;
 }
