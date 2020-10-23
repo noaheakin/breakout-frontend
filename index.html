@@ -1,17 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <meta charset="utf-8">
     <title>Page Title</title>
+    </link>
     <link rel="stylesheet" href="src/stylesheet.css" />
     <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
 </head>
+
 <body>
     <main>
         <div class="title-div">
-            <h1 class="title">Breakout (Club) Game</h1>
+            <h1 class="animate__animated animate__backInLeft" id="title">Breakout (Club) Game</h1>
         </div>
-        <div id="div_form" class="div-style">
+        <div id="div_form" class="animate__animated animate__backInRight div-style">
             <!-- <h3> where user name appears</h3> -->
             <form id="form_id">
             </form>
@@ -23,13 +30,14 @@
             </div>
             <div id="start-game"></div>
         </div>
-            <!-- <button id="start-game">Start Game</button> -->
-        <h2 id="show-score-lives" class="tracker"></h2>  
-        <canvas id="my-canvas" width="1010" height="800"></canvas>
-        
+        <!-- <button id="start-game">Start Game</button> -->
+        <h2 id="show-score-lives" class="tracker"></h2>
+        <canvas id="my-canvas" width="1010" height="800" class="animate__animated animate__backInLeft"></canvas>
+
         <!-- <div id="platform", style="bottom:100px; left:400px;"></div> -->
         <script src="./src/index.js"></script>
-        <script src="src/Fetch.js"></script>
+
     </main>
 </body>
+
 </html>

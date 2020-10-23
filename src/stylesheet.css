@@ -1,89 +1,114 @@
-#platform {
-    background-color: pink;
-    height: 20px;
-    position: relative;
-    width: 150px;
-}
+                #platform {
+                background-color: pink;
+                height: 20px;
+                position: relative;
+                width: 150px;
+            }
+            
+            body {
+                background: #e6ffff;
+                padding: 0;
+                margin: 0;
+            }
+            
+            Canvas {
+                background: #ccffff;
+                margin-left: 20%;
+                margin-right: 20%;
+                border: 5px navy solid;
+                width: 58%;
+                margin-bottom: 100px;
+            }
+            
+            .block-unit {
+                background-color: orange;
+            }
+            
+            .div-style {
+                text-align: center;
+                border: 2px solid navy;
+                padding: 20px 20px 20px 20px;
+                margin-left: 18px;
+                width: 400px;
+                margin: 0 auto
+            }
+            
+            .title-div {
+                text-align: center;
+                background-color: #ffccb3;
+                margin-left: 250px;
+                margin-right: 250px;
+            }
+            
+            #title {
+                color: white;
+                font-family: Monoton;
+                /* font-weight: 900px; */
+                font-size: 40px;
+                border: 5px #ff884d solid;
+            }
+            
+           #div_form {
+               color: #e46533;
 
-body {
-    background:#e6ffff;
-    padding: 0;
-    margin: 0;
-}
-
-Canvas {
-    background: #ccffff;
-    margin-left: 20%;
-    margin-right: 20%;
-    border: 5px navy solid;
-    width: 58%;
-    margin-bottom: 100px;
-}
-
-.block-unit {
-    background-color: orange;
-}
-
-.div-style {
-    text-align: center;
-    border: 2px solid navy;
-    padding: 20px 20px 20px 20px;
-    margin-left: 18px;
-    width: 400px;
-    margin: 0 auto
-}
-
-.title-div {
-    text-align: center;
-    background-color: #ffccb3;
-    margin-left: 250px;
-    margin-right: 250px;
-}
-
-.title {
-    color: white;
-    font-family: Monoton;
-    /* font-weight: 900px; */
-    font-size: 40px;
-    border: 5px #ff884d solid;
-}
-
-/* .score-css {
+           }
+            /* .score-css {
     border: 2px solid navy;
     padding: 20px 20px 20px 20px;
     margin-left: 18px;
     width: 400px;
     margin: 0 auto
 } */
-
-.scores-list {
-    text-align: center;
-    padding: 20px 20px 20px 20px;
-    width: 400px;
-    margin: 0 auto
-}
-
-.current-user {
-    text-align: center;
-    padding: 20px 20px 0px 20px;
-    width: 400px;
-    margin: 0 auto;
-}
-
-.start-btn {
-    width: 50%;
-    margin-left: 25%;
-    margin-right: 25%;
-    margin-bottom: 20px;
-}
-
-.tracker {
-    width: 80%;
-    margin-left: 10%;
-    margin-right: 10%;
-    text-align: center;
-}
-
-/* .score-li {
-    text-align: justify;
-} */
+            
+            .scores-list {
+                text-align: center;
+                padding: 20px 20px 20px 20px;
+                width: 400px;
+                margin: 0 auto
+            }
+            
+            .current-user {
+                text-align: center;
+                padding: 20px 20px 0px 20px;
+                width: 400px;
+                margin: 0 auto;
+            }
+            
+            .start-btn {
+                width: 50%;
+                margin-left: 25%;
+                margin-right: 25%;
+                margin-bottom: 20px;
+            }
+            
+            .tracker {
+                width: 80%;
+                margin-left: 10%;
+                margin-right: 10%;
+                text-align: center;
+            }
+            
+            button {
+                color: #1D9AF2;
+                background-color: #292D3E;
+                border: 1px solid #1D9AF2;
+                border-radius: 4px;
+                padding: 15px 18px 30px 15px;
+                cursor: pointer;
+                height: 32px;
+                font-size: 14px;
+                box-shadow: 0 0 4px #999;
+                outline: none;
+                background-position: center;
+                transition: background 0.8s;
+            }
+            
+            button:hover {
+                background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
+                color: white;
+            }
+            
+            button:active {
+                background-color: #292d3e;
+                background-size: 100%;
+                transition: background 0s;
