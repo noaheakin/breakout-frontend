@@ -162,7 +162,7 @@ function userTopScores(topScores) {
         topScores.forEach(element => {
             let li = document.createElement("li")
             li.className = 'score-li'
-            li.innerHTML = `--- ${element.score} ---       `
+            li.innerHTML = `*** ${element.score} ***       `
             let deleteScoreBtn = document.createElement("button")
             li.append(deleteScoreBtn)
             deleteScoreBtn.innerHTML = "X"
