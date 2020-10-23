@@ -274,7 +274,10 @@ function drawBlocks() {
                 blocks[c][r].y = blockY
                 ctx.beginPath()
                 ctx.rect(blockX, blockY, blockWidth, blockHeight)
-                ctx.fillStyle = "green"
+                let red = Math.floor(Math.random()* 255);
+                let green = Math.floor(Math.random() * 255);
+                let blue = Math.floor(Math.random() * 255);
+                ctx.fillStyle = "rgb(" + red + "," + green + "," + blue + " )"
                 ctx.fill()
                 ctx.closePath()
             }
