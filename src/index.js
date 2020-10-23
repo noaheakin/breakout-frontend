@@ -4,6 +4,9 @@ let body = document.querySelector('#div_form')
 let form = document.querySelector('#form_id')
 let inputField = document.querySelector('#input_value')
 let inputField2 = document.querySelector('#input_value2')
+let currentUserId
+let interval
+
 getUsers(userUrl)
 function getUsers(url) {
     fetch(url)
@@ -45,7 +48,17 @@ function handleSubmit(e){
         })
     }) 
     .then(res => res.json())
-    .then(console.log) 
+    .then(newUser => {
+        displayUser(newUser)
+        currentUserId = newUser.id
+    }) 
+}
+
+
+function displayUser(newUser){
+    let h3 = document.querySelector('#user-info')
+    h3.innerHTML = newUser.username
+    interval = setInterval(draw, 1)
 }
 
 function buildForm(){
@@ -59,17 +72,57 @@ function buildForm(){
 }
 buildForm()
 
+// Get user scores
+function postUserScore() {
+    fetch('http://localhost:3000/scores', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            score: currentScore,
+            user_id: currentUserId
+        })
+    })  
+    .then(res => res.json())  
+    .then(json => {
+        debugger
+    })
+}
+
+// function getUserScores() {
+//     fetch(`http://localhost:3000/users/${}`)
+//     .then(res => res.json())
+//     .then(user => {
+//         let sortScores = user.scores.sort()
+//         let topScores = sortScores.slice(-3)
+//         userTopScores(topScores)
+//     })
+// }
+
+///////////////////////// THE FRONTEND ANIMATION STUFFFFFFFFF
+
 let url = 'http://localhost:3000/grids'
 let canvas = document.querySelector('#my-canvas')
 let ctx = canvas.getContext("2d")
 let rightPressed = false
 let leftPressed = false
 // let platform = document.getElementById("platform")
-let score = 0
+let currentScore = 0
 let lives = 3
 
 // THIS RUNS THE PROGRAM!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// let interval = setInterval(draw, 1)
+// let interval
+// function loggedIn(){
+//     if (currentUserId === undefined) {
+//         console.log('not signed in')
+//     } else {
+//         console.log('logged in')
+//         interval = setInterval(draw, 1)
+//     }
+// }
+
+
 
 let platform = {x: (canvas.width - 200)/2, y: canvas.height - 40, width: 200, height: 10, speed: 8}
 
@@ -154,6 +207,7 @@ function drawBlocks() {
     }
 }
 
+// ball collision with blocks
 function collision() {
     for (let c = 0; c < blockColumnCount; c++) {
         for (let r = 0; r < blockRowCount; r++) {
@@ -161,15 +215,16 @@ function collision() {
                 if (ball.x > blocks[c][r].x && ball.x < blocks[c][r].x + blockWidth && ball.y > blocks[c][r].y && ball.y < blocks[c][r].y + blockHeight) {
                     ball.dy = -ball.dy;
                     blocks[c][r].show = 0;
-                    score += 10
+                    currentScore += 10
                     blockCounter--
-                    console.log(`score = ${score}, ${blockCounter} blocks left`)
+                    console.log(`currentScore = ${currentScore}, ${blockCounter} blocks left`)
                 }
             }
         }
     }
 }
 
+// ball collision with platform
 function collisionPlatform(){
     if(ball.x < platform.x + platform.width && ball.x > platform.x && platform.y < platform.y + platform.height && ball.y > platform.y){
         // grabs where the ball hits the platform
@@ -201,16 +256,16 @@ function resetPlatform(){
 
 function finalResult(){
     if (lives == 0) {
-        alert(`You have lost. final score = ${score}`)
+        postUserScore()
+        alert(`You have lost. final score = ${currentScore}`)
         // reloads page and starts game again after alert button pressed
         document.location.reload()
-        // postUserScore()
         clearInterval(interval)
     }else if (blockCounter == 0) {
-        alert(`You Won! lives = ${lives}, score = ${score}`)
+        postUserScore()
+        alert(`You Won! lives = ${lives}, score = ${currentScore}`)
         // reloads page and starts game again after alert button pressed
         document.location.reload()
-        // postUserScore()
         clearInterval(interval)
     }
 }
@@ -234,8 +289,8 @@ function draw() {
     } 
     if (ball.y + ball.dy > canvas.height-ball.radius) {
         lives--
-        score -= 50
-        console.log(`lives = ${lives} score = ${score}`)
+        currentScore -= 50
+        console.log(`lives = ${lives} score = ${currentScore}`)
         resetBall()
         resetPlatform()
     }
@@ -251,31 +306,6 @@ function draw() {
     ball.x += ball.dx
     ball.y += ball.dy
 }
-
-// Get user scores
-// function postUserScore() {
-//     fetch('http://localhost:3000/scores', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({
-//             score: score,
-//             user_id: 
-//         })
-//     })    
-// }
-
-// function getUserScores() {
-//     fetch(`http://localhost:3000/users/${}`)
-//     .then(res => res.json())
-//     .then(user => {
-//         let sortScores = user.scores.sort()
-//         let topScores = sortScores.slice(-3)
-//         userTopScores(topScores)
-//     })
-// }
-
 
 
 
