@@ -127,10 +127,12 @@ function getUserScores() {
     .then(res => res.json())
     .then(user => {
         let tempScores = user.scores
-        let sortScores = tempScores.sort(compare)
-        let topScores = sortScores.slice(0, 3)
-        debugger
-        userTopScores(topScores)
+        if (tempScores.length > 0) {
+            let sortScores = tempScores.sort(compare)
+            let topScores = sortScores.slice(0, 3)
+            debugger
+            userTopScores(topScores)
+        }
     })
 }
 
@@ -148,7 +150,7 @@ function userTopScores(topScores) {
     let ol = document.querySelector('#user-scores')
     topScores.forEach(element => {
         let li = document.createElement("li")
-        li.innerHTML = element.score
+        li.innerHTML = `score: ${element.score}`
         ol.append(li)
     })
 }
