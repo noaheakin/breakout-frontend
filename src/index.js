@@ -30,7 +30,31 @@ function patchUser(user,id){
     })
 }
 
-form.addEventListener('submit', (e) => handleSubmit(e))
+form.addEventListener('submit', (e) => {
+    e.preventDefault()
+    checkUser(e)
+})
+
+function checkUser(e) {
+    let u = 0
+    fetch(userUrl)
+    .then(res => res.json())
+    .then(users => users.forEach(user => {
+        if (user.username == e.target[0].value) {
+            u++
+            currentUserId = user.id
+            displayUser(user)
+        }
+        else {
+            console.log("not this one")
+        }
+    }))
+    if (u == 0) {
+        handleSubmit(e)
+    }
+}
+
+
 
 // handle submit
 function handleSubmit(e){
@@ -84,10 +108,6 @@ function postUserScore() {
             user_id: currentUserId
         })
     })  
-    .then(res => res.json())  
-    .then(json => {
-        debugger
-    })
 }
 
 // function getUserScores() {
@@ -256,6 +276,7 @@ function resetPlatform(){
 
 function finalResult(){
     if (lives == 0) {
+        debugger
         postUserScore()
         alert(`You have lost. final score = ${currentScore}`)
         // reloads page and starts game again after alert button pressed
