@@ -86,6 +86,15 @@ function handleSubmit(e){
 function displayUser(newUser){
     let h3 = document.querySelector('#user-info')
     h3.innerHTML = newUser.username
+    let deleteBtn = document.createElement("button")
+    h3.append(deleteBtn)
+    deleteBtn.innerHTML = "Delete User"
+    deleteBtn.addEventListener('click', () => {
+        fetch(`http://localhost:3000/users/${currentUserId}`, {
+            method: 'DELETE'
+        })
+        .then(h3.innerHTML = "")
+    })
 }
 
 function buildForm(){
@@ -293,7 +302,7 @@ function finalResult(){
     if (lives == 0) {
         postUserScore()
         alert(`You have lost. final score = ${currentScore}`)
-        // reloads page and starts game again after alert button pressed
+        // reloads page and starts game again after alert button pressed. potentially change to canvas
         document.location.reload()
         clearInterval(interval)
     }else if (blockCounter == 0) {
