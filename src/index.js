@@ -10,6 +10,7 @@ let currentUserId
 let interval
 let gameButton = document.createElement('button')
 gameButton.innerText = 'New Game'
+gameButton.className = 'start-btn'
 let startDiv = document.querySelector('#start-game')
 let scoresContainer = document.querySelector('#scores-container')
 
@@ -47,7 +48,6 @@ function checkUser(e) {
     .then(res => res.json())
     .then(users => users.forEach(user => {
         if (user.username == e.target[0].value) {
-            debugger
             u++
             currentUserId = user.id
             displayUser(user)
@@ -67,7 +67,6 @@ function checkUser(e) {
 
 // handle submit
 function handleSubmit(e){
-    debugger
     e.preventDefault()
     // let user = {
     //     username: e.target[0].value
@@ -131,7 +130,6 @@ function postUserScore() {
 }
 
 function getUserScores() {
-    debugger
     fetch(`http://localhost:3000/users/${currentUserId}`)
     .then(res => res.json())
     .then(user => {
@@ -139,7 +137,6 @@ function getUserScores() {
         if (tempScores.length > 0) {
             let sortScores = tempScores.sort(compare)
             let topScores = sortScores.slice(0, 3)
-            debugger
             userTopScores(topScores)
         }
     })
@@ -163,7 +160,8 @@ function userTopScores(topScores) {
         scoresContainer.prepend(h4)
         topScores.forEach(element => {
             let li = document.createElement("li")
-            li.innerHTML = `score: ${element.score}`
+            li.className = 'score-li'
+            li.innerHTML = element.score
             ol.append(li)
         })
     } else {
@@ -208,7 +206,7 @@ function showScoreLives(){
     h2.innerHTML = `SCORE: ${currentScore} LIVES: ${lives}`
 }
 
-let platform = {x: (canvas.width - 200)/2, y: canvas.height - 40, width: 150, height: 10, speed: 2}
+let platform = {x: (canvas.width - 200)/2, y: canvas.height - 40, width: 140, height: 10, speed: 2}
 
 function drawPlatform() {
     ctx.beginPath()
