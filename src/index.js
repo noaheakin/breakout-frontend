@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-// let url = 'http://localhost:3000/grids'
-=======
 const userUrl = 'http://localhost:3000/users'
 let main = document.querySelector('main')
 let body = document.querySelector('#div_form')
@@ -138,7 +135,6 @@ function postUserScore() {
 ///////////////////////// THE FRONTEND ANIMATION STUFFFFFFFFF
 
 let url = 'http://localhost:3000/grids'
->>>>>>> 51e1c9f6430a2b5d0c2c95d843eb235dc2aee944
 let canvas = document.querySelector('#my-canvas')
 let ctx = canvas.getContext("2d")
 let rightPressed = false
