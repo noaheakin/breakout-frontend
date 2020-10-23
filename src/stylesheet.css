@@ -7,6 +7,8 @@
 
 body {
     background:#e6ffff;
+    padding: 0;
+    margin: 0;
 }
 
 Canvas {
@@ -14,7 +16,8 @@ Canvas {
     margin-left: 20%;
     margin-right: 20%;
     border: 5px navy solid;
-    width: 60%;
+    width: 58%;
+    margin-bottom: 100px;
 }
 
 .block-unit {
@@ -39,9 +42,9 @@ Canvas {
 
 .title {
     color: white;
-    font-family: Bradley Hand;
-    font-weight: 900px;
-    font-size: 50px;
+    font-family: Monoton;
+    /* font-weight: 900px; */
+    font-size: 40px;
     border: 5px #ff884d solid;
 }
 

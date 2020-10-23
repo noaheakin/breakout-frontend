@@ -162,12 +162,27 @@ function userTopScores(topScores) {
             let li = document.createElement("li")
             li.className = 'score-li'
             li.innerHTML = element.score
+            let deleteScoreBtn = document.createElement("button")
+            li.append(deleteScoreBtn)
+            deleteScoreBtn.innerHTML = "X"
+            deleteScoreBtn.addEventListener('click', () => deleteScores(element, ol))
             ol.append(li)
         })
     } else {
         h4.innerText = "No User Scores"
         scoresContainer.prepend(h4)
     }
+}
+
+function deleteScores(element, ol){
+    debugger
+    fetch(`http://localhost:3000/scores/${element.id}`, {
+        method: 'DELETE'
+    })
+    .then(() => {
+        ol.innerHTML = ""
+        getUserScores()
+    }) 
 }
 
 ///////////////////////// THE FRONTEND ANIMATION STUFFFFFFFFF
