@@ -1,11 +1,18 @@
+window.onbeforeunload = function () {
+    window.scrollTo(0, 0);
+}
+
 const userUrl = 'http://localhost:3000/users'
 let main = document.querySelector('main')
 let body = document.querySelector('#div_form')
 let form = document.querySelector('#form_id')
-let inputField = document.querySelector('#input_value')
-let inputField2 = document.querySelector('#input_value2')
 let currentUserId
 let interval
+let gameButton = document.createElement('button')
+gameButton.innerText = 'New Game'
+gameButton.className = 'start-btn'
+let startDiv = document.querySelector('#start-game')
+let scoresContainer = document.querySelector('#scores-container')
 
 // getUsers(userUrl)
 // function getUsers(url) {
@@ -41,7 +48,6 @@ function checkUser(e) {
     .then(res => res.json())
     .then(users => users.forEach(user => {
         if (user.username == e.target[0].value) {
-            debugger
             u++
             currentUserId = user.id
             displayUser(user)
@@ -61,7 +67,6 @@ function checkUser(e) {
 
 // handle submit
 function handleSubmit(e){
-    debugger
     e.preventDefault()
     // let user = {
     //     username: e.target[0].value
@@ -77,17 +82,18 @@ function handleSubmit(e){
     }) 
     .then(res => res.json())
     .then(newUser => {
-        displayUser(newUser)
         currentUserId = newUser.id
+        displayUser(newUser)
     }) 
 }
 
-
 function displayUser(newUser){
     let h3 = document.querySelector('#user-info')
-    h3.innerHTML = newUser.username
+    h3.innerHTML = `Hello, ${newUser.username}!   `
+    getUserScores()
     let deleteBtn = document.createElement("button")
     h3.append(deleteBtn)
+    startDiv.append(gameButton)
     deleteBtn.innerHTML = "Delete User"
     deleteBtn.addEventListener('click', () => {
         fetch(`http://localhost:3000/users/${currentUserId}`, {
@@ -99,12 +105,13 @@ function displayUser(newUser){
 
 function buildForm(){
     main.innerhtml = ''
-    let h2 = document.createElement('h2')
-    h2.textContent = "Submit Username"
-    let inputField = document.querySelector('#input_value')
-    let inputField2 = document.querySelector('#input_value2')
-    inputField2.type = 'submit'
-    form.append(inputField, inputField2, h2)
+    let label = document.createElement('label')
+    label.textContent = "User Login:     "
+    label.style = "font-size: 20px; font-weight: bold"
+    let input = document.createElement('input')
+    let loginBtn = document.createElement('button')
+    loginBtn.innerText = 'Login'
+    form.append(label, input, loginBtn)
 }
 buildForm()
 
@@ -122,15 +129,46 @@ function postUserScore() {
     })  
 }
 
-// function getUserScores() {
-//     fetch(`http://localhost:3000/users/${}`)
-//     .then(res => res.json())
-//     .then(user => {
-//         let sortScores = user.scores.sort()
-//         let topScores = sortScores.slice(-3)
-//         userTopScores(topScores)
-//     })
-// }
+function getUserScores() {
+    fetch(`http://localhost:3000/users/${currentUserId}`)
+    .then(res => res.json())
+    .then(user => {
+        let tempScores = user.scores
+        if (tempScores.length > 0) {
+            let sortScores = tempScores.sort(compare)
+            let topScores = sortScores.slice(0, 3)
+            userTopScores(topScores)
+        }
+    })
+}
+
+function compare(a, b){
+    if ( a.score > b.score ){
+        return -1;
+    }
+    if ( a.score < b.score ){
+        return 1;
+    }
+    return 0;
+}
+
+function userTopScores(topScores) {
+    let ol = document.querySelector('#user-scores')
+    let h4 = document.createElement('h4')
+    if (topScores.length > 0) {
+        h4.innerText = "Your Top Scores:"
+        scoresContainer.prepend(h4)
+        topScores.forEach(element => {
+            let li = document.createElement("li")
+            li.className = 'score-li'
+            li.innerHTML = element.score
+            ol.append(li)
+        })
+    } else {
+        h4.innerText = "No User Scores"
+        scoresContainer.prepend(h4)
+    }
+}
 
 ///////////////////////// THE FRONTEND ANIMATION STUFFFFFFFFF
 
@@ -142,7 +180,7 @@ let leftPressed = false
 // let platform = document.getElementById("platform")
 let currentScore = 0
 let lives = 3
-let gameButton = document.querySelector('#start-game')
+// let gameButton = document.querySelector('#start-game')
 
 // THIS RUNS THE PROGRAM!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // let interval
@@ -168,7 +206,7 @@ function showScoreLives(){
     h2.innerHTML = `SCORE: ${currentScore} LIVES: ${lives}`
 }
 
-let platform = {x: (canvas.width - 200)/2, y: canvas.height - 40, width: 200, height: 10, speed: 8}
+let platform = {x: (canvas.width - 200)/2, y: canvas.height - 40, width: 140, height: 10, speed: 2}
 
 function drawPlatform() {
     ctx.beginPath()
@@ -278,9 +316,9 @@ function collisionPlatform(){
         // calculates the angle of the ball that it comes into contact with the platform
         let angle = collidePoint * Math.PI/3
         // dx and dy change to the hypotenuse of the angle
-       // ball.speed *= 1.1
-        ball.dx = Math.sin(angle) 
-        ball.dy = -Math.cos(angle) 
+        ball.speed *= 1.04
+        ball.dx = Math.sin(angle) * ball.speed
+        ball.dy = -Math.cos(angle) * ball.speed
     }
 }
 
