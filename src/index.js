@@ -15,11 +15,77 @@ gameButton.innerText = 'New Game'
 gameButton.className = 'start-btn'
 let startDiv = document.querySelector('#start-game')
 let scoresContainer = document.querySelector('#scores-container')
+let winningSound = new Audio('src/sounds/win.wav')
+winningSound.volume = 0.7
 
 form.addEventListener('submit', (e) => {
     e.preventDefault()
     checkUser(e)
 })
+
+function playMusic() {
+    let song = new Audio('src/sounds/test.wav');
+    song.loop = true;
+    song.volume = 0.25
+    song.play()
+}
+
+function blockSound () {
+    let selector = Math.floor(Math.random() * Math.floor(13));
+    let sound1 = new Audio('src/sounds/block1.wav')
+    sound1.volume = 0.7
+    let sound2 = new Audio('src/sounds/block2.wav')
+    sound2.volume = 0.7
+    let sound3 = new Audio('src/sounds/block3.wav')
+    sound3.volume = 0.7
+    let sound4 = new Audio('src/sounds/block4.wav')
+    sound4.volume = 0.7
+    let sound5 = new Audio('src/sounds/block5.wav')
+    sound5.volume = 0.7
+    let sound6 = new Audio('src/sounds/block6.wav')
+    sound6.volume = 0.7
+    let sound7 = new Audio('src/sounds/block7.wav')
+    sound7.volume = 0.7
+    let sound8 = new Audio('src/sounds/block8.wav')
+    sound8.volume = 0.7
+    let sound9 = new Audio('src/sounds/block9.wav')
+    sound9.volume = 0.7
+    let sound10 = new Audio('src/sounds/block10.wav')
+    sound10.volume = 0.7
+    let sound11 = new Audio('src/sounds/block11.wav')
+    sound11.volume = 0.7
+    let sound12 = new Audio('src/sounds/block12.wav')
+    sound10.volume = 0.7
+    let sound13 = new Audio('src/sounds/block13.wav')
+    sound11.volume = 0.7
+    if (selector == 0) {
+        sound1.play()
+    } else if (selector == 1) {
+        sound2.play()
+    } else if (selector == 2) {
+        sound3.play()
+    } else if (selector == 3) {
+        sound4.play()
+    } else if (selector == 4) {
+        sound5.play()
+    } else if (selector == 5) {
+        sound6.play()
+    } else if (selector == 6) {
+        sound7.play()
+    } else if (selector == 7) {
+        sound8.play()
+    } else if (selector == 8) {
+        sound9.play()
+    } else if (selector == 9) {
+        sound10.play()
+    } else if (selector == 10) {
+        sound11.play()
+    } else if (selector == 11) {
+        sound12.play()
+    } else if (selector == 12) {
+        sound13.play()
+    }
+}
 
 function checkUser(e) {
     let u = 0
@@ -192,6 +258,7 @@ gameButton.addEventListener('click', () => {
     if (currentUserId === undefined) {
         alert("sign in to play")
     } else {
+        playMusic()
         interval = setInterval(draw, 1)
     }
 })
@@ -274,9 +341,9 @@ function drawBlocks() {
                 blocks[c][r].y = blockY
                 ctx.beginPath()
                 ctx.rect(blockX, blockY, blockWidth, blockHeight)
-                let red = Math.floor(Math.random()* 255);
-                let green = Math.floor(Math.random() * 255);
-                let blue = Math.floor(Math.random() * 255);
+                let red = Math.floor(Math.random() * (256 - 50) + 50);
+                let green = Math.floor(Math.random() * (256 - 50) + 50);
+                let blue = Math.floor(Math.random() * (256 - 50) + 50);
                 ctx.fillStyle = "rgb(" + red + "," + green + "," + blue + " )"
                 ctx.fill()
                 ctx.closePath()
@@ -295,6 +362,7 @@ function collision() {
                     blocks[c][r].show = 0;
                     currentScore += 10
                     blockCounter--
+                    blockSound()
                     console.log(`currentScore = ${currentScore}, ${blockCounter} blocks left`)
                 }
             }
@@ -305,16 +373,38 @@ function collision() {
 // ball collision with platform
 function collisionPlatform() {
     if (ball.x < platform.x + platform.width && ball.x > platform.x && platform.y < platform.y + platform.height && ball.y > platform.y) {
-        // grabs where the ball hits the platform
+        platformSound ()
         let collidePoint = ball.x - (platform.x + platform.width / 2)
-            // normalizes the collide point
         collidePoint = collidePoint / (platform.width / 2)
-            // calculates the angle of the ball that it comes into contact with the platform
         let angle = collidePoint * Math.PI / 3
-            // dx and dy change to the hypotenuse of the angle
         ball.speed *= 1.04
         ball.dx = Math.sin(angle) * ball.speed
         ball.dy = -Math.cos(angle) * ball.speed
+    }
+}
+
+function platformSound () {
+    let selector = Math.floor(Math.random() * Math.floor(5));
+    let platform1 = new Audio('src/sounds/platform1.wav')
+    platform1.volume = 0.25
+    let platform2 = new Audio('src/sounds/platform2.wav')
+    platform2.volume = 0.25
+    let platform3 = new Audio('src/sounds/platform3.wav')
+    platform3.volume = 0.25
+    let platform4 = new Audio('src/sounds/platform4.wav')
+    platform4.volume = 0.25
+    let platform5 = new Audio('src/sounds/platform5.wav')
+    platform5.volume = 0.25
+    if (selector == 0) {
+        platform1.play()
+    } else if (selector == 1) {
+        platform2.play()
+    } else if (selector == 2) {
+        platform3.play()
+    } else if (selector == 3) {
+        platform4.play()
+    } else if (selector == 4) {
+        platform5.play()
     }
 }
 
@@ -340,6 +430,7 @@ function finalResult() {
         document.location.reload()
         clearInterval(interval)
     } else if (blockCounter == 0) {
+        winningSound.play()
         postUserScore()
         alert(`You Won! lives = ${lives}, score = ${currentScore}`)
             // reloads page and starts game again after alert button pressed
