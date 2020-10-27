@@ -24,7 +24,7 @@ form.addEventListener('submit', (e) => {
 })
 
 function playMusic() {
-    let song = new Audio('src/sounds/test.wav');
+    let song = new Audio('./src/sounds/test.wav');
     song.loop = true;
     song.volume = 0.25
     song.play()
@@ -305,7 +305,7 @@ let ball = { x: canvas.width / 2, y: canvas.height - 50, radius: 10, dx: 1, dy: 
 function drawBall() {
     ctx.beginPath()
     ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2)
-    ctx.fillStyle = "blue"
+    ctx.fillStyle = "white"
     ctx.fill()
     ctx.closePath()
 }
@@ -341,9 +341,9 @@ function drawBlocks() {
                 blocks[c][r].y = blockY
                 ctx.beginPath()
                 ctx.rect(blockX, blockY, blockWidth, blockHeight)
-                let red = Math.floor(Math.random() * (256 - 50) + 50);
-                let green = Math.floor(Math.random() * (256 - 50) + 50);
-                let blue = Math.floor(Math.random() * (256 - 50) + 50);
+                let red = Math.floor(Math.random() * (255 - 200) + 200);
+                let green = Math.floor(Math.random() * (255 - 200) + 200);
+                let blue = Math.floor(Math.random() * (255 - 200) + 200);
                 ctx.fillStyle = "rgb(" + red + "," + green + "," + blue + " )"
                 ctx.fill()
                 ctx.closePath()
