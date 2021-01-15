@@ -4,8 +4,7 @@ Breakout is a fun reimagination of Atari's classic game, "Breakout". The user pl
 
 ## Tutorial
 
-<video src="images/breakout-tutorial.mp4" width="600" alt="breakout tutorial video"/>
-<video src="images/breakout-sign-in.mp4" width="600" alt="breakout sign-in video"/>
+<iframe src="https://giphy.com/embed/B0cfImU3ZlhIDGilVG" width="480" height="316" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/B0cfImU3ZlhIDGilVG">via GIPHY</a></p>
 
 ## Installation
 
