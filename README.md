@@ -4,7 +4,13 @@ Breakout is a fun reimagination of Atari's classic game, "Breakout". The user pl
 
 ## Tutorial
 
+sign in
+
 <img src="images/sign-in.gif" width="500" alt="breakout sign-in gif"/>
+
+gameplay
+
+<img src="images/gameplay.gif" width="500" alt="breakout gameplay gif"/>
 
 ## Installation
 
